@@ -13,10 +13,12 @@ Output: 7 -> 8 -> 0 -> 7
 ~~~~~~~~~~~~
         """
         注意：我容易犯错的点！新建一个没有值的linked list，最好直接用None，不要ListNode()
-        方法1：先翻转2个list，然后边求和边 边讲最新求和新建的node放在前面 cur.next = head, head = cur
+        方法1：先翻转2个list，然后边求和边 边将新建的node(val %10)放在前面 cur.next = head, head = cur
         O(N1 + N2); O(max(N1, N2))
         ~~~
-        方法2：用stack
+        方法2：stack
+        将2个lists分别存入stack1, stack2; 依次遍历2个stacks，求和求进制，新建ListNode(val%10)同时将此node放进前面
+        O(N1 + N2); O(N1 + N2)
         """
 #方法1
 # Definition for singly-linked list.
@@ -57,4 +59,28 @@ class Solution:
             cur.next = dummy
             dummy = cur
             
+        return dummy
+#方法2
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        stack1, stack2 = [], []
+        while l1:
+            stack1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            stack2.append(l2.val)
+            l2 = l2.next
+        
+        dummy = None
+        cur = dummy
+        carry = 0
+        while stack1 or stack2 or carry != 0: #将carry也放进去判读，是个好巧思
+            x1 = stack1.pop() if stack1 else 0
+            x2 = stack2.pop() if stack2 else 0
+            val = x1 + x2 + carry
+            
+            cur = ListNode(val % 10)
+            cur.next = dummy
+            dummy = cur
+            carry = val // 10
+
         return dummy
