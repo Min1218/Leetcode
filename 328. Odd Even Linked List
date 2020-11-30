@@ -19,6 +19,11 @@ The first node is considered odd, the second node even and so on ...
 The length of the linked list is between [0, 10^4].
 
 ~~~~~~~~~~~~~~~~~
+        """
+        traverse the original LinkedList with 3 pointes cur, odd and even. cur is the odd node of the original list, so odd points to cur and even points to cur.next.
+        O(n) - n: no. of nodes in the original LinkedList; O(1)
+        """
+        
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, val=0, next=None):
@@ -30,10 +35,7 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        """
-        traverse the original LinkedList with 3 pointes cur, odd and even. cur is the odd node of the original list, so odd points to cur and even points to cur.next.
-        O(n) - n: no. of nodes in the original LinkedList; O(1)
-        """
+        
         if not head:
             return head
         
