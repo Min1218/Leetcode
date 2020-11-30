@@ -33,12 +33,12 @@ class Solution:
         return head
         # if not head:
         #     return head
-        # cur, nex = head, head.next
-        # while nex:
-        #     if cur.val == nex.val:
-        #         nex = nex.next
-        #         cur.next = None #
-        #     else:
-        #         cur.next = nex
-        #         cur, nex = cur.next, nex.next
-        # return head
+        # pre = dummy = head
+        # cur = head.next
+        # while cur:
+        #     if pre.val != cur.val:
+        #         pre.next = cur
+        #         pre = pre.next
+        #     cur = cur.next
+        # pre.next = None
+        # return dummy
