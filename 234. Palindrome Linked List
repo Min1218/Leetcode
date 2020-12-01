@@ -50,7 +50,7 @@ class Solution(object):
         Flag = True
         # 1
         while fast and fast.next:
-            fast = fast.next.next
+            fast = fast.next.next #容易出错点
             temp = slow.next
             slow.next = pre
             pre = slow
