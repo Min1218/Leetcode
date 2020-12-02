@@ -1,0 +1,51 @@
+Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.
+
+You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.
+
+Example 1:
+
+Input: 
+	Tree 1                     Tree 2                  
+          1                         2                             
+         / \                       / \                            
+        3   2                     1   3                        
+       /                           \   \                      
+      5                             4   7                  
+Output: 
+Merged tree:
+	     3
+	    / \
+	   4   5
+	  / \   \ 
+	 5   4   7
+ 
+
+Note: The merging process must start from the root nodes of both trees.
+~~~~~~~~~~~~~~~~~~~~~~
+        
+""" 
+        #从顶向下
+前序遍历逻辑: 1. 处理"当前root", 2. 递归左子树，3. 递归右子树。 剩余子树的合并交给递归调用（2，3），也就是重复执行上面的3步
+参考https://leetcode-cn.com/problems/merge-two-binary-trees/solution/shou-hua-tu-jie-by-xiao_ben_zhu-3/
+O(m): m-the minimum no. of nodes from the two given trees;
+O(m): the depth of the recursion tree can be m (a skewed tree)
+"""
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def mergeTrees(self, t1: TreeNode, t2: TreeNode) -> TreeNode:
+
+        if not t1:
+            return t2
+        if not t2:
+            return t1
+        dummy = TreeNode(t1.val + t2.val)
+        dummy.left = self.mergeTrees(t1.left, t2.left)
+        dummy.right = self.mergeTrees(t1.right, t2.right)
+        return dummy
+    
