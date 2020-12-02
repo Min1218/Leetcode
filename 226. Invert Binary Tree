@@ -18,7 +18,9 @@ Output:
 9   6 3   1
 
 ~~~~~~~~·
-
+        #O(n); O(h) - h is the height of the tree. 
+        #Recursion- O(h) function calls will be placed on the stack in the worst case
+        
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
