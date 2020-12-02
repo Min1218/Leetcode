@@ -18,6 +18,10 @@ Output:
 9   6 3   1
 
 ~~~~~~~~·
+""" 
+前序遍历逻辑: 1. 处理"当前root", 2. 递归左子树，3. 递归右子树。 剩余子树的合并交给递归调用（2，3），也就是重复执行上面的3步
+参考https://leetcode-cn.com/problems/merge-two-binary-trees/solution/shou-hua-tu-jie-by-xiao_ben_zhu-3/
+"""
         #O(n); O(h) - h is the height of the tree. 
         #Recursion- O(h) function calls will be placed on the stack in the worst case
         
