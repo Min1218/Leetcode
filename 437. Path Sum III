@@ -1,0 +1,63 @@
+You are given a binary tree in which each node contains an integer value.
+
+Find the number of paths that sum to a given value.
+
+The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+
+The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.
+
+Example:
+
+root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+      10
+     /  \
+    5   -3
+   / \    \
+  3   2   11
+ / \   \
+3  -2   1
+
+Return 3. The paths that sum to 8 are:
+
+1.  5 -> 3
+2.  5 -> 2 -> 1
+3. -3 -> 11
+
+~~~~~~~~~~~~`
+"""
+递归方式-不是最优解
+找到子问题：
+ 路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点） 。这就要求我们只需要去求三部分即可：
+
+以当前节点作为头结点的路径数量
+以当前节点的左孩子作为头结点的路径数量
+以当前节点的右孩子作为头结点啊路径数量
+将这三部分之和作为最后结果即可。
+https://leetcode-cn.com/problems/path-sum-iii/solution/437lu-jing-zong-he-iii-di-gui-fang-shi-by-ming-zhi/
+"""
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> int:
+        def find(node, sum):
+            if not node:
+                return 0
+            sum -= node.val
+            if sum == 0:
+                result = 1
+            else:
+                result = 0
+            return result + find(node.left, sum) + find(node.right, sum)
+            
+        if not root:
+            return 0
+        
+        res = find(root, sum)
+        left = self.pathSum(root.left, sum)
+        right = self.pathSum(root.right, sum)
+        return res + left + right
