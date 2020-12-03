@@ -1,0 +1,67 @@
+Given two non-empty binary trees s and t, check whether tree t has exactly the same structure and node values with a subtree of s. A subtree of s is a tree consists of a node in s and all of this node's descendants. The tree s could also be considered as a subtree of itself.
+
+Example 1:
+Given tree s:
+
+     3
+    / \
+   4   5
+  / \
+ 1   2
+Given tree t:
+   4 
+  / \
+ 1   2
+Return true, because t has the same structure and node values with a subtree of s.
+ 
+
+Example 2:
+Given tree s:
+
+     3
+    / \
+   4   5
+  / \
+ 1   2
+    /
+   0
+Given tree t:
+   4
+  / \
+ 1   2
+Return false.
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+递归
+1. 判断 t 是否为 s 的子树的三个条件是或的关系，即：
+(1). 当前两棵树相等；
+(2). 或者，t 是 s 的左子树；
+(3). 或者，t 是 s 的右子树。
+2. 判断两个树是否相等的三个条件是与的关系，即：
+(1). 当前两个树的根节点值相等；
+(2). 并且，s 的左子树和 t 的左子树相等；
+(3). 并且，s 的右子树和 t 的右子树相等。
+https://leetcode-cn.com/problems/subtree-of-another-tree/solution/dui-cheng-mei-pan-duan-zi-shu-vs-pan-duan-xiang-de/
+"""
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+        def check(node1, node2):
+            if not node1 and not node2:
+                return True
+            if not node1 or not node2:
+                return False
+            return node1.val == node2.val and check(node1.left, node2.left) and check(node1.right, node2.right)
+        
+        if not s:
+            return False
+        if not t:
+            return True
+        res = check(s, t)
+        return res or self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
