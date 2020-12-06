@@ -28,6 +28,7 @@ Note: You may assume the tree (i.e., the given root node) is not NULL.
 """
 层序遍历
 网上看到一个写的特别简洁好的答案，记录下
+https://leetcode-cn.com/problems/find-bottom-left-tree-value/solution/cong-you-dao-zuo-de-ceng-xu-bian-li-bu-xu-ji-lu-zh/
 O(n), O(n)
 """
 # Definition for a binary tree node.
