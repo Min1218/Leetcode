@@ -22,9 +22,10 @@ root.val == min(root.left.val, root.right.val) for each internal node of the tre
 ~~~~~~~~~~~~
 """
 题中tree的特性是当前node是 ≤ 左右子node的值
-所以找到比root.val小的值就直接返回，不用全部遍历 ->有点 前序遍历的 思路
+所以找到比root.val小的值就直接返回，不用全部遍历 -> 前序遍历的 思路
 O(n); O(n)
 """
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -33,19 +34,21 @@ O(n); O(n)
 #         self.right = right
 class Solution:
     def findSecondMinimumValue(self, root: TreeNode) -> int:
-        
-        def preorder(node, value):
+        if not root:
+            return -1
+        first, second = root.val, float('inf')
+        def helper(node):
+            nonlocal first, second
             if not node:
-                return -1
-            if node.val > value:
-                return node.val
-            left = preorder(node.left, value)
-            right = preorder(node.right, value)
-            if left < 0:
-                return right
-            if right < 0:
-                return left
-            return min(left, right)
+                return
+            if first < node.val < second:
+                second = node.val
+            else:
+                helper(node.left)
+                helper(node.right)
         
-        return preorder(root, root.val)
+        helper(root)
+        print(first, second)
+        return second if second != float('inf') else -1
+            
         
