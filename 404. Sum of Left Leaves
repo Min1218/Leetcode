@@ -28,27 +28,18 @@ https://leetcode-cn.com/problems/sum-of-left-leaves/solution/pythondi-gui-qiu-ji
 #         self.right = right
 class Solution:
     def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        res = 0
+        
+        def findLeftLeaves(node):
+            nonlocal res
+            if not node:
+                return
+            if node.left and not node.left.left and not node.left.right:
+                res += node.left.val
+            findLeftLeaves(node.left)
+            findLeftLeaves(node.right)
+            return res
+        
         if not root:
-            return 0
-        if root.left and not root.left.left and not root.left.right:
-            res = root.left.val
-        else:
-            res = self.sumOfLeftLeaves(root.left)
-        
-        return res + self.sumOfLeftLeaves(root.right)
-    
-#         res = 0
-#         def dfs(node):
-#             nonlocal res
-#             if not node:
-#                 return None
-#             if node.left and not node.left.left and not node.left.right:
-#                 res += node.left.val
-#             dfs(node.left)
-#             dfs(node.right)
-#         if not root:
-#             return 0
-        
-#         dfs(root)
-    
-#         return res
+            return res
+        return findLeftLeaves(root)
