@@ -3,3 +3,24 @@ Given a list of daily temperatures T, return a list such that, for each day in t
 For example, given the list of temperatures T = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
 
 Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
+
+~~~~~~~~~~~~~~
+"""
+递减栈
+O(n): n is length of T
+O(W): W is the number of strictly increasing temperatures
+"""
+
+class Solution:
+    def dailyTemperatures(self, T: List[int]) -> List[int]:
+        
+        if not T:
+            return []
+        res = [0] * len(T)
+        stack = []
+        for i in range(len(T)):    
+            while stack and T[i] > T[stack[-1]]:
+                colder_index = stack.pop()
+                res[colder_index] = i - colder_index
+            stack.append(i)
+        return res
