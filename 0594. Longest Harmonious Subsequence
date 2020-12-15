@@ -42,7 +42,7 @@ class Solution(object):
         hashtable = {}
         for num in nums:
             hashtable[num] = hashtable.get(num, 0) + 1
-            if num + 1 in hashtable:
+            if num + 1 in hashtable: # 特殊情况[1,1,1,1]
                 res = max(res, hashtable[num] + hashtable[num + 1])
             if num - 1 in hashtable:
                 res = max(res, hashtable[num] + hashtable[num - 1])
