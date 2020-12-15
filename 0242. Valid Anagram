@@ -1,0 +1,38 @@
+Given two strings s and t , write a function to determine if t is an anagram of s.
+
+Example 1:
+
+Input: s = "anagram", t = "nagaram"
+Output: true
+Example 2:
+
+Input: s = "rat", t = "car"
+Output: false
+Note:
+You may assume the string contains only lowercase alphabets.
+
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+~~~~~~~~~~
+"""
+用mapping记录s中的字符，遍历t中的字符是否存在mapping中
+O(n); O(S) - S <= 26
+"""
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+
+        if len(s) != len(t):
+            return False
+        
+        mapping = {}
+        for c in s:
+            mapping[c] = mapping.get(c, 0) + 1
+        
+        for c in t:
+            if c not in mapping or mapping.get(c, 0) == 0:
+                return False
+            else:
+                mapping[c] -= 1
+        
+        return True
