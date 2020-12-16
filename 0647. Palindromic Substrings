@@ -23,7 +23,7 @@ The input string length won't exceed 1000.
 ~~~~~~~~~~~~~
 """
 状态： dp[i][j]：表示字符串s在[i, j]区间是否一个回文字符穿
-边界条件
+边界条件; 特殊情况
 状态转移方程：从右下方开始，因为当前的状态是由其左下的状态决定
 O(n^2); O(n^2)
 """
@@ -43,7 +43,7 @@ class Solution:
             for j in range(i + 1, n):
                 if s[i] == s[j]:
                     if j - i == 1:
-                        dp[i][j] = True
+                        dp[i][j] = True #特殊情况 'aa'
                     else:
                         dp[i][j] = dp[i + 1][j - 1]
                 if dp[i][j]:
