@@ -24,7 +24,8 @@ class Solution:
             j = abs(nums[i]) #abs很必须
             if nums[j - 1] < 0:
                 dup = j
-            nums[j - 1] = -abs(nums[j - 1])
+            else:
+                nums[j - 1] = -(nums[j - 1])
         for i in range(n):
             if nums[i] >= 0:
                 return [dup, i + 1]
