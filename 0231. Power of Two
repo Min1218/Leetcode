@@ -1,0 +1,61 @@
+Given an integer n, return true if it is a power of two. Otherwise, return false.
+
+An integer n is a power of two, if there exists an integer x such that n == 2x.
+
+ 
+
+Example 1:
+
+Input: n = 1
+Output: true
+Explanation: 20 = 1
+Example 2:
+
+Input: n = 16
+Output: true
+Explanation: 24 = 16
+Example 3:
+
+Input: n = 3
+Output: false
+Example 4:
+
+Input: n = 4
+Output: true
+Example 5:
+
+Input: n = 5
+Output: false
+ 
+
+Constraints:
+
+-231 <= n <= 231 - 1
+
+~~~~~~~~~~~~
+"""
+Method 1: 数学方法 O(log(n)); O(1)
+Method 2:
+2的幂的特点：2 的幂在二进制中是有一个 1 后跟一些 0; 我们通过 x & (-x) 保留了最右边的 1，并将其他位设置为 0 若 x 为 2 的幂，则它的二进制表示中只包含一个 1，则有 x & (-x) = x。
+O(1); O(1)
+Method 3:
+x & (x - 1) 操作会将 2 的幂设置为 0，因此判断是否为 2 的幂是：判断 x & (x - 1) == 0
+O(1); O(1)
+"""
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        # Method 3
+        if n == 0:
+            return False
+        return n & (n - 1) == 0
+        ## Method2
+        # if n == 0:
+        #     return False
+        # return n & (-n) == n
+    
+#         if n == 0:
+#             return False     
+#         while n % 2 == 0:
+#             n = n /2
+        
+#         return n == 1
