@@ -1,0 +1,47 @@
+Given an integer n, return true if it is a power of four. Otherwise, return false.
+
+An integer n is a power of four, if there exists an integer x such that n == 4x.
+
+ 
+
+Example 1:
+
+Input: n = 16
+Output: true
+Example 2:
+
+Input: n = 5
+Output: false
+Example 3:
+
+Input: n = 1
+Output: true
+ 
+
+Constraints:
+
+-231 <= n <= 231 - 1
+ 
+
+Follow up: Could you solve it without loops/recursion?
+
+~~~~~~~~~~~~
+"""
+Method 1: math O(logn); O(1)
+Method 2: bit manipulation
+首先检查 num 是否为 2 的幂：x > 0 and x & (x - 1) == 0; 然后根据观察： 2 的偶数幂（当 x 是 4 的幂时）, 其二进制表示中 1 处于偶数位置：第 0 位、第 2 位、第 4 位等； 2 的奇数幂（当 x 不是 4 的幂时), 其二进制中1处于奇数位置
+所以4^a & (101010...10)_2 == 0
+(101010...10)_2 用十六进制表示为 ：(aaaaaaaa)16
+O(1); O(1)
+"""
+class Solution:
+    def isPowerOfFour(self, n: int) -> bool:
+        # Method 2
+        return n > 0 and n & (n - 1) == 0 and n & (0xaaaaaaaa) == 0
+        # if n == 1:
+        #     return True
+        # if n == 0:
+        #     return False
+        # while n % 4 == 0:
+        #     n /= 4
+        # return n == 1
