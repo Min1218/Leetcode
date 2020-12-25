@@ -1,0 +1,64 @@
+Given a non-empty array of integers, return the k most frequent elements.
+
+Example 1:
+
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+Example 2:
+
+Input: nums = [1], k = 1
+Output: [1]
+Note:
+
+You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+It's guaranteed that the answer is unique, in other words the set of the top k frequent elements is unique.
+You can return the answer in any order.
+
+~~~~~~~~~~~~~~
+"""
+method 1: 优先队列-维护大小为k的堆. 存入堆内容[freq, num]freq在前
+O(nlogk); O(k)
+method 2: 桶排序，用频数作为桶的标签，往桶里放元素，从频数最大桶开始取，取到数量都k个,就是前k个最大元素
+O(n); O(n)
+"""
+import heapq
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        
+        # Method 2
+        mapping = dict()
+        res = list()
+        for i in range(len(nums)):
+            mapping[nums[i]] = mapping.get(nums[i], 0) + 1
+        bucket = defaultdict(list) #定义
+        for num in mapping:
+            bucket[mapping[num]].append(num)
+            
+        for i in range(len(nums), -1, -1):
+            if bucket[i]:
+                res.extend(bucket[i])
+                # extend的行为是把这两个list接到一起
+                #append是将它的参数视为element，作为一个整体添加上去的
+            if len(res) >= k:
+                break
+        return res[:k]
+    
+#         # Method 1
+#         mapping = {}
+#         res, heap = [], []
+        
+#         for i in range(len(nums)):
+#             mapping[nums[i]] = mapping.get(nums[i], 0) + 1
+        
+#         for num in mapping:
+#             print(num, mapping[num])
+#             if len(heap) == k:
+#                 if mapping[num] > heap[0][0]:
+#                     heapq.heappop(heap)
+#                     heapq.heappush(heap, [mapping[num], num]) #注意需要将频率放在num前面
+#             else:
+#                 heapq.heappush(heap, [mapping[num], num])
+#         while heap:
+#             res.append(heapq.heappop(heap)[1])
+#         return res
