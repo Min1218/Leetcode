@@ -1,0 +1,63 @@
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+Example 2:
+
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+Note:
+You may assume k is always valid, 1 ≤ k ≤ array's length.
+
+~~~~~~~~~
+"""
+method 1: heap：不包含多线程安全（与 prior queue对比)
+O(nlogn); O(k)
+method 2: quickselect
+O(n); O(1)
+"""
+
+import heapq
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        # method 2
+        
+        def partition(left, right):
+            idx = random.randint(left, right)
+            nums[idx], nums[left] = nums[left], nums[idx]
+            
+            pivot = nums[left]
+            j = left
+            for i in range(left + 1, right + 1):
+                if nums[i] < pivot:
+                    j += 1
+                    nums[i], nums[j] = nums[j], nums[i]
+            
+            nums[left], nums[j] = nums[j], nums[left]
+            return j
+        
+        target = len(nums) - k
+        left, right = 0, len(nums) - 1
+        while True:
+            idx = partition(left, right)
+            if idx == target:
+                return nums[idx]
+            elif idx < target:
+                left = idx + 1
+            else:
+                right = idx - 1
+        
+#         # method 1
+#         res = []
+#         for i in range(len(nums)):
+#             if len(res) == k:
+#                 if nums[i] > res[0]:
+#                     heapq.heappop(res)
+#                     heapq.heappush(res, nums[i])
+#             else:
+#                 heapq.heappush(res, nums[i])
+        
+#         return res[0]
+            
