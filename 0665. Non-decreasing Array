@@ -1,0 +1,50 @@
+Given an array nums with n integers, your task is to check if it could become non-decreasing by modifying at most 1 element.
+
+We define an array is non-decreasing if nums[i] <= nums[i + 1] holds for every i (0-based) such that (0 <= i <= n - 2).
+
+ 
+
+Example 1:
+
+Input: nums = [4,2,3]
+Output: true
+Explanation: You could modify the first 4 to 1 to get a non-decreasing array.
+Example 2:
+
+Input: nums = [4,2,1]
+Output: false
+Explanation: You can't get a non-decreasing array by modify at most one element.
+ 
+
+Constraints:
+
+1 <= n <= 10 ^ 4
+- 10 ^ 5 <= nums[i] <= 10 ^ 5
+
+~~~~~~~~~~~~~~~
+"""
+reference: https://leetcode-cn.com/problems/non-decreasing-array/solution/python3xiang-jie-bu-gai-bian-shu-zu-yuan-su-zhi-ch/
+考虑特殊情况处理
+O(n); O(1)
+"""
+class Solution:
+    def checkPossibility(self, nums: List[int]) -> bool:
+        # 特殊情况 [3,4,2,3]
+        if len(nums) == 1:
+            return True
+        
+        n = len(nums)
+        pre = nums[0]
+        cnt = 0
+        
+        for i in range(1, n):
+            if nums[i] < nums[i - 1]:
+                cnt += 1
+                #特殊情况
+                if i + 1 < n and i - 2 >= 0:
+                    if nums[i - 2] > nums[i] and nums[i + 1] < nums[i - 1]:
+                        return False
+            if cnt > 1:
+                return False
+            
+        return True
