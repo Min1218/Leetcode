@@ -1,0 +1,98 @@
+Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+Follow up: Could you write an algorithm with O(log n) runtime complexity?
+
+ 
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
+ 
+
+Constraints:
+
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums is a non-decreasing array.
+-109 <= target <= 109
+
+~~~~~~~~~~~~~~~~~~~~~~
+"""
+二分搜索
+reference: https://leetcode-cn.com/problems/search-insert-position/solution/te-bie-hao-yong-de-er-fen-cha-fa-fa-mo-ban-python-/
+每一轮区间被划分成 2 部分，理解 区间划分 决定中间数取法（ 无需记忆，需要练习 + 理解 ），在调试的过程中理解 区间和中间数划分的配对关系：
+划分 [left, mid] 与 [mid + 1, right] ，mid 被分到左边，对应 int mid = left + (right - left) / 2;；
+划分 [left, mid - 1] 与 [mid, right] ，mid 被分到右边，对应 int mid = left + (right - left + 1) / 2;。
+至于为什么划分是这种对应关系，原因在于区间只有 2 个数的时候，如果中间数的取法不对，一旦进入的分支不能使得区间缩小，会出现 死循环。
+
+O(logn); O(1)
+"""
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        def findLeft(nums, size):
+            left, right = 0, size - 1
+            while left < right:
+                mid = left + (right - left) // 2
+                if nums[mid] > target:
+                    right = mid - 1
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid
+            if nums[left] == target:
+                return left
+            else:
+                return -1
+            
+        def findRight(nums, size):
+            left, right = 0, size - 1
+            while left < right:
+                mid = left + (right - left + 1) // 2
+                if nums[mid] > target:
+                    right = mid - 1
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    left = mid 
+            return left
+        
+        size = len(nums)
+        if size == 0:
+            return [-1, -1]
+        left_idx = findLeft(nums, size)
+        if left_idx == -1:
+            return [-1, -1]
+        right_idx = findRight(nums, size)
+        
+        return [left_idx, right_idx]
+        
+            
+        #二分查找+线性搜索 -> 时间复杂度高
+        # left, right = 0, len(nums) - 1
+        # start, end = -1, -1
+        # while left <= right:
+        #     mid = left + (right - left) // 2
+        #     if nums[mid] > target:
+        #         right = mid - 1
+        #     elif nums[mid] < target:
+        #         left = mid +1
+        #     else:
+        #         start, end, = mid, mid
+        #         while start > 0 and nums[start] == nums[start - 1]:
+        #             start -= 1
+        #         while end < len(nums) - 1 and nums[end] == nums[end + 1]:
+        #             end += 1
+        #         break
+        # return [start, end] 
