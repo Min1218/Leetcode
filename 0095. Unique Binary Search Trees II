@@ -1,0 +1,59 @@
+Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1 ... n.
+
+Example:
+
+Input: 3
+Output:
+[
+  [1,null,3,2],
+  [3,2,null,1],
+  [3,1,null,null,2],
+  [2,1,3],
+  [1,null,2,null,3]
+]
+Explanation:
+The above output corresponds to the 5 unique BST's shown below:
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+ 
+
+Constraints:
+
+0 <= n <= 8
+
+~~~~~~~~~~~~~~~~~
+"""
+答案不是很理解
+reference: https://leetcode-cn.com/problems/unique-binary-search-trees-ii/solution/bu-tong-de-er-cha-sou-suo-shu-ii-by-leetcode-solut/
+时间复杂度为 O(\frac{4^n}{n^{1/2}}); 空间复杂度为 O(\frac{4^n}{n^{1/2}})
+"""
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        def dfs(start, end):
+            if start > end:
+                return [None, ]
+            
+            allTrees = []
+            for i in range(start, end + 1):
+                leftTrees = dfs(start, i - 1)
+                rightTrees = dfs(i + 1, end)
+                
+                for l in leftTrees:
+                    for r in rightTrees:
+                        curTree = TreeNode(i)
+                        curTree.left = l
+                        curTree.right = r
+                        allTrees.append(curTree)
+            return allTrees
+        
+        return dfs(1, n) if n else []
