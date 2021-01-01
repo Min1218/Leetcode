@@ -1,0 +1,52 @@
+Given a string of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. The valid operators are +, - and *.
+
+Example 1:
+
+Input: "2-1-1"
+Output: [0, 2]
+Explanation: 
+((2-1)-1) = 0 
+(2-(1-1)) = 2
+Example 2:
+
+Input: "2*3-4*5"
+Output: [-34, -14, -10, -10, 10]
+Explanation: 
+(2*(3-(4*5))) = -34 
+((2*3)-(4*5)) = -14 
+((2*(3-4))*5) = -10 
+(2*((3-4)*5)) = -10 
+(((2*3)-4)*5) = 10
+
+~~~~~~~~~~~~~~~~
+"""
+分治算法
+reference: https://leetcode-cn.com/problems/different-ways-to-add-parentheses/solution/pythongolang-fen-zhi-suan-fa-by-jalan/
+分治算法三步走：
+1.分解: 按运算符号将输入分成左右两部分，分别求解
+2.解决：实现一个递归函数，输入算式，返回算式解
+3.合并：根据运算符号合并左右两部分的解，得出最终解
+时间复杂度为 O(\frac{4^n}{n^{1/2}}); 空间复杂度为 O(\frac{4^n}{n^{1/2}})
+"""
+class Solution:
+    def diffWaysToCompute(self, input: str) -> List[int]:
+        # 如果只有数字，直接输出
+        if input.isdigit():
+            return [int(input)]
+        
+        res = []
+        for i, cha in enumerate(input):
+            if cha in ['+', '-', '*']:
+                left = self.diffWaysToCompute(input[:i])
+                right = self.diffWaysToCompute(input[i + 1:])
+                for l in left:
+                    # print(l)
+                    for r in right:
+                        # print(r)
+                        if cha == '+':
+                            res.append(l + r)
+                        elif cha == '-':
+                            res.append(l - r)
+                        else:
+                            res.append(l * r)
+        return res
