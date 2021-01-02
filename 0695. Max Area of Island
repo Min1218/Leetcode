@@ -1,0 +1,53 @@
+Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+Find the maximum area of an island in the given 2D array. (If there is no island, the maximum area is 0.)
+
+Example 1:
+
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,1,1,0,1,0,0,0,0,0,0,0,0],
+ [0,1,0,0,1,1,0,0,1,0,1,0,0],
+ [0,1,0,0,1,1,0,0,1,1,1,0,0],
+ [0,0,0,0,0,0,0,0,0,0,1,0,0],
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],
+ [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+Given the above grid, return 6. Note the answer is not 11, because the island must be connected 4-directionally.
+Example 2:
+
+[[0,0,0,0,0,0,0,0]]
+Given the above grid, return 0.
+Note: The length of each dimension in the given grid does not exceed 50.
+
+~~~~~~~~~~~~~~~~~~~
+"""
+dfs - 模板 https://www.jianshu.com/p/7a060346acc6
+O(m * n); O(m * n)
+"""
+class Solution:
+    directions = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:  
+        m = len(grid)
+        if not m:
+            return 0
+        n = len(grid[0])
+        marked = [[False for i in range(n)] for j in range(m)]
+        cnt = 0
+        for i in range(m):
+            for j in range(n):
+                if 0 <= i < m and 0 <= j < n and grid[i][j] == 1 and not marked[i][j]:
+                    cnt = max(self.dfs(grid, m, n, i, j, marked), cnt)
+        return cnt
+    
+    def dfs(self, grid, m, n, i, j, marked):
+        marked[i][j] = True
+        ans = 1
+        for direction in self.directions:
+            new_i = i + direction[0]
+            new_j = j + direction[1]
+            # 递归终止条件
+            if 0 <= new_i < m and 0 <= new_j < n and grid[new_i][new_j] == 1 and not marked[new_i][new_j]:
+                    ans += self.dfs(grid, m, n, new_i, new_j, marked)
+        
+        return ans
+                    
