@@ -1,0 +1,68 @@
+Given an m x n matrix of non-negative integers representing the height of each unit cell in a continent, the "Pacific ocean" touches the left and top edges of the matrix and the "Atlantic ocean" touches the right and bottom edges.
+
+Water can only flow in four directions (up, down, left, or right) from a cell to another one with height equal or lower.
+
+Find the list of grid coordinates where water can flow to both the Pacific and Atlantic ocean.
+
+Note:
+
+The order of returned grid coordinates does not matter.
+Both m and n are less than 150.
+ 
+
+Example:
+
+Given the following 5x5 matrix:
+
+  Pacific ~   ~   ~   ~   ~ 
+       ~  1   2   2   3  (5) *
+       ~  3   2   3  (4) (4) *
+       ~  2   4  (5)  3   1  *
+       ~ (6) (7)  1   4   5  *
+       ~ (5)  1   1   2   4  *
+          *   *   *   *   * Atlantic
+
+Return:
+
+[[0, 4], [1, 3], [1, 4], [2, 2], [3, 0], [3, 1], [4, 0]] (positions with parentheses in above matrix).
+
+~~~~~~~~~~~~~~~~~~`
+"""
+reference: https://leetcode-cn.com/problems/pacific-atlantic-water-flow/
+solution/417java-dfscong-bian-yuan-wang-li-fang-wen-xiang-j/
+https://leetcode-cn.com/problems/pacific-atlantic-water-flow/solution/dfs-by-powcai-5/
+找到的每一个点都有2个路径到达两个大洋：一次以太平洋为目标，一次以大西洋为目标。
+从内部的点以边界为目标去进行路径行走比较麻烦，但是如果换一个思路，从边缘往里面走。
+从边缘向里走就修改通行规则，要往高度比当前点高或者相等的点走。
+时间复杂度为O(n)，因为只对每一个点进行了最多三次遍历，n表示坐标点的个数。空间复杂度除去递归调用占用的空间为O(n)。
+"""
+class Solution:
+    directions = [ [-1, 0], [1, 0], [0, -1], [0, 1]]
+    
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        res1 = set()
+        res2 = set()  
+        m = len(matrix)
+        if not m:
+            return []
+        n = len(matrix[0])
+        # to Pacific
+        for i in range(m):
+            self.dfs(matrix, i, 0, res1)
+        for j in range(n):
+            self.dfs(matrix, 0, j, res1)
+            
+        # to Atlantic
+        for i in range(m):
+            self.dfs(matrix, i, n - 1, res2)
+        for j in range(n):
+            self.dfs(matrix, m - 1, j, res2)
+        
+        return res1 & res2
+    
+    def dfs(self, matrix, i, j, res):
+        res.add((i, j))
+        for direct in self.directions:
+            next_i, next_j = i + direct[0], j + direct[1]
+            if 0 <= next_i < len(matrix) and 0 <= next_j < len(matrix[0]) and matrix[i][j] <= matrix[next_i][next_j] and (next_i, next_j) not in res:
+                self.dfs(matrix, next_i, next_j, res)
