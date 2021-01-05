@@ -1,0 +1,47 @@
+Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+
+Example 1:
+
+Input: n = 12
+Output: 3 
+Explanation: 12 = 4 + 4 + 4.
+Example 2:
+
+Input: n = 13
+Output: 2
+Explanation: 13 = 4 + 9.
+
+~~~~~~~~
+"""
+BFS - 在每次迭代中，我们检查余数是否是一个完全平方数。如果余数不是一个完全平方数，就用其中一个完全平方数减去它，
+得到一个新余数，然后将新余数添加到 next_queue 中，以进行下一级的迭代。一旦遇到一个完全平方数的余数，我们就会
+跳出循环，这也意味着我们找到了解。
+
+时间复杂度：O(n^{\frac{h}{2}})，其中 h 是可能发生的最大递归次数。，
+算法种的递归调用轨迹形成一个 N 元树，其中 N 是 square_nums 种的完全平方数个数。
+即，在最坏的情况下，我们可能要遍历整棵树才能找到最终解。
+
+空间复杂度：O(\sqrt{n})^h)，这也是在 h 级可以出现的最大节点数。
+虽然我们保留了一个完全平方数列表，但是空间的主要消耗是队列变量，它跟踪给定 N 元树级别上要访问的剩余节点。
+reference：https://leetcode-cn.com/problems/perfect-squares/solution/wan-quan-ping-fang-shu-by-leetcode/
+"""
+class Solution:
+    def numSquares(self, n: int) -> int:
+        square_nums = [i * i for i in range(1, int(n ** 0.5) + 1)]
+        level = 0
+        queue = {n}
+        
+        while queue:
+            level += 1
+            next_que = set()
+            for reminder in queue:
+                for square_num in square_nums:
+                    if reminder == square_num:
+                        return level
+                    elif reminder < square_num:
+                        break
+                    else:
+                        next_que.add(reminder - square_num)
+            queue = next_que
+        
+        return level
