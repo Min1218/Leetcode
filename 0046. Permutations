@@ -1,0 +1,56 @@
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Example 2:
+
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+Example 3:
+
+Input: nums = [1]
+Output: [[1]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 6
+-10 <= nums[i] <= 10
+All the integers of nums are unique.
+
+~~~~~~~~~~~~~~~~~~
+"""
+回溯法
+时间复杂度：O(n∗n!)，其中 n 为序列的长度。
+算法的复杂度首先受 backtrack 的调用次数制约，backtrack 的调用次数为 n 的 k - 排列，或者部分排列。backtrack 的调用次数是O(n!)的。
+而对于 backtrack 调用的每个叶结点（共 n!个），我们需要将当前答案使用 O(n)的时间复制到答案数组中，相乘得时间复杂度为O(n∗n!)。
+
+空间复杂度:O(n∗n!)，其中 n 为序列的长度。除答案数组以外，递归函数在递归过程中需要为每一层递归函数分配栈空间，所以这里需要额外的空间且该空间取决于递归的深度，这里可知递归调用深度为O(n)。
+"""
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def bfs(nums, size, depth, path, used, res):
+            if depth == size:
+                res.append(path[:])
+                return res
+            for i in range(size):
+                if not used[i]:
+                    used[i] = True
+                    path.append(nums[i])
+                    bfs(nums, size, depth + 1, path, used, res)
+                    used[i] = False
+                    path.pop()
+        
+        size = len(nums)
+        if size == 0:
+            return []
+        used = [False] * size
+        res = []
+        bfs(nums, size, 0, [], used, res)
+        
+        return res
+            
