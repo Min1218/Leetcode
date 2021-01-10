@@ -1,0 +1,76 @@
+Given a string s containing only digits, return all possible valid IP addresses that can be obtained from s. You can return them in any order.
+
+A valid IP address consists of exactly four integers, each integer is between 0 and 255, separated by single dots and cannot have leading zeros. For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses and "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses. 
+
+ 
+
+Example 1:
+
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+Example 2:
+
+Input: s = "0000"
+Output: ["0.0.0.0"]
+Example 3:
+
+Input: s = "1111"
+Output: ["1.1.1.1"]
+Example 4:
+
+Input: s = "010010"
+Output: ["0.10.0.10","0.100.1.0"]
+Example 5:
+
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+ 
+
+Constraints:
+
+0 <= s.length <= 3000
+s consists of digits only.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~·
+
+"""
+回溯
+Time complexity : there is not more than 27 combinations to check.
+Space complexity : constant space to keep the solutions, not more than 19 valid IP addresses.
+"""
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        
+        def valid(segment):
+            # check if the current segment is valid: 1. <= 255; 2. if 1st == '0', iff len == 1
+            if segment[0] == '0' and len(segment) != 1:
+                return False
+            return int(segment) <= 255
+        
+        def backtrack(begin, split):
+            # begin: the position of the previously placed dot
+            # splits: # of splits
+            if begin == size and split == 4:
+                res.append('.'.join(path))
+                return
+            
+            #prune
+            if size - begin < 4 - split or size - begin > 3 * (4 - split):
+                return
+            
+            for i in range(begin, size):
+                # if begin + i > size:
+                #     break
+                segment = s[begin: i + 1]
+                if valid(segment):
+                    path.append(segment)
+                    backtrack(i + 1, split + 1)
+                    path.pop()
+                    
+        size = len(s)
+        if size < 4 or size > 12:
+            return []
+        res, path = [], []
+        backtrack(0, 0)
+        
+        return res
+        
