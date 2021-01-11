@@ -1,0 +1,73 @@
+Given an m x n board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where "adjacent" cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+Example 1:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+Output: true
+Example 2:
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+Output: true
+Example 3:
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+Output: false
+ 
+Constraints:
+
+m == board.length
+n = board[i].length
+1 <= m, n <= 200
+1 <= word.length <= 103
+board and word consists only of lowercase and uppercase English letters.
+
+~~~~~~~~~~~~~~~~~
+"""
+回溯法
+(1)Time Complexity:O(N \cdot 3 ^ L) where N is the number of cells in the board and L is the length of the word to be matched.
+For the backtracking function, initially we could have at most 4 directions to explore, but further the choices are reduced 
+into 3 (since we won't go back to where we come from).
+(2)Space Complexity: O(L) where L is the length of the word to be matched. The main consumption of the memory 
+lies in the recursion call of the backtracking function. The maximum length of the call stack would be the length of the word.
+"""
+class Solution:
+    
+    directions = [(0, -1), (-1, 0), (0, 1), (1, 0)]
+    
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        
+        if not len(board):
+            return False
+        m = len(board)
+        n = len(board[0])
+        visited = [[False] * n for i in range(m)]
+        
+        for i in range(m):
+            for j in range(n):
+                # 剪枝
+                if board[i][j] == word[0]:
+                    visited[i][j] = True
+                    if self.backtrack(i, j, visited, board, word[1:], m, n):
+                        return True
+                    else:
+                        visited[i][j] = False
+        
+        return False
+    
+    def backtrack(self, i, j, visited, board, word, m, n):
+        #先写递归终止条件
+        if len(word) == 0:
+            return True
+        #中间匹配了，再继续搜索
+        for direct in self.directions:
+            next_i, next_j = i + direct[0], j + direct[1]
+            if 0 <= next_i < m and 0 <= next_j < n and not visited[next_i][next_j] and board[next_i][next_j] == word[0]:
+                visited[next_i][next_j] = True
+                if self.backtrack(next_i, next_j, visited, board, word[1:], m, n):
+                    return True
+                else:
+                    visited[next_i][next_j] = False
+        return False
