@@ -1,0 +1,66 @@
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+ 
+
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+ 
+
+Constraints:
+
+1 <= candidates.length <= 100
+1 <= candidates[i] <= 50
+1 <= target <= 30
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+回溯算法
+Time Complexity: O(2^N)The number of combination for an array of size N would be 2^N
+i.e. each number is either included or excluded in a combination.
+Space Complexity:O(N) We use the variable comb to keep track of the current combination we build, which requiresO(N) space.
+In addition, we apply recursion in the algorithm, which will incur additional memory consumption in the function call stack. In the worst case, the stack will pile up to O(N) space.
+"""
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        def backtrack(start, path, rem):
+            if rem == 0:
+                res.append(path[:])
+                return 
+            
+            for i in range(start, size):
+                if rem - candidates[i] < 0:
+                    continue
+                if i > start and candidates[i - 1] == candidates[i]:
+                    continue
+                    
+                path.append(candidates[i])
+                backtrack(i + 1, path, rem - candidates[i])
+                path.pop()
+                
+        size = len(candidates)
+        res, path = [], []
+        candidates.sort()
+        backtrack(0, path, target)
+        
+        return res
