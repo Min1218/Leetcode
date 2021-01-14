@@ -1,0 +1,44 @@
+Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
+
+Note: The solution set must not contain duplicate subsets.
+
+Example:
+
+Input: [1,2,2]
+Output:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+~~~~~~~~~~~~~~~~~~~~~
+
+"""
+时间复杂度：O(n \times 2^n), 一共 2^n2 个状态，每种状态需要O(n)的时间来构造子集。
+空间复杂度：O(n)。即构造子集使用的临时数组 t 的空间代价。
+"""
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        
+        def backtrack(begin, path):
+            if len(path) <= size:
+                res.append(path[:])
+            else:
+                return
+            for i in range(begin, size):
+                if i > begin and nums[i] == nums[i-1]:
+                    continue
+                path.append(nums[i])
+                backtrack(i + 1, path)
+                path.pop()
+        
+        size = len(nums)
+        if not size:
+            return [[]]
+        path, res = [], []
+        nums.sort()
+        backtrack(0, path)
+        return res
