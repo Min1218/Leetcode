@@ -1,0 +1,72 @@
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+ 
+
+Example 1:
+
+
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+Example 2:
+
+Input: n = 1
+Output: [["Q"]]
+ 
+
+Constraints:
+
+1 <= n <= 9
+~~~~~~~~~~~
+
+"""
+回溯算法
+时间复杂度：O(N!)，其中 N 是皇后数量。
+空间复杂度：O(N).空间复杂度主要取决于递归调用层数、记录每行放置的皇后的列下标的数组以及三个集合，
+递归调用层数不会超过 N，数组的长度为 N，每个集合的元素个数都不会超过 N。
+"""
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        
+        def could_place(row, col):
+            return not (cols[col] + hill_diagonal[row - col] + dale_diagonal[row + col])
+        
+        def place_queen(row, col):
+            queen.add((row, col))
+            cols[col] = 1
+            hill_diagonal[row - col] = 1
+            dale_diagonal[row + col] = 1
+        
+        def remove_queen(row, col):
+            queen.remove((row, col))
+            cols[col] = 0
+            hill_diagonal[row - col] = 0
+            dale_diagonal[row + col] = 0
+        
+        def add_solutions():
+            solution = []
+            for row, col in sorted(queen):
+                solution.append('.' * col + 'Q' + '.' * (n - col - 1))
+            res.append(solution)
+        
+        def backtrack(row):
+            for col in range(n):
+                if could_place(row, col):
+                    place_queen(row, col)
+                    if row + 1 == n:
+                        add_solutions()
+                    else:
+                        backtrack(row + 1)
+                    remove_queen(row, col)
+        cols = [0] * n
+        queen = set()
+        hill_diagonal = [0] * (2 * n - 1)
+        dale_diagonal = [0] * (2 * n - 1)
+        res = []
+        backtrack(0)
+        return res
+                
