@@ -1,0 +1,77 @@
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+The '.' character indicates empty cells.
+
+ 
+
+Example 1:
+
+
+Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
+Explanation: The input board is shown above and the only valid solution is shown below:
+
+
+ 
+
+Constraints:
+
+board.length == 9
+board[i].length == 9
+board[i][j] is a digit or '.'.
+It is guaranteed that the input board has only one solution.
+
+~~~~~~~~~~~~~~~
+"""
+reference: https://leetcode-cn.com/problems/sudoku-solver/solution/pythonsethui-su-chao-guo-95-by-mai-mai-mai-mai-zi/
+用set数据结构存储9x9格子可以使用的数字；
+（1）遍历数字
+1.存储空白格的位置
+2.如果遍历的位置存有数字，将对应的row，col，block set数组去掉改数字
+（2）遍历结束后，进行递归枚举，递归条件是枚举填入的数字在row，col，和block中同时存在 (说明该数字没有使用)
+（3）递归结束条件：填满所有空白格
+"""
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        def backtrack(iters):
+            if iters == len(empty):
+                return True
+            i, j = empty[iters]
+            b = (i // 3) * 3 + j // 3
+            
+            for val in row[i] & col[j] & block[b]:
+                row[i].remove(val)
+                col[j].remove(val)
+                block[b].remove(val)
+                board[i][j] = str(val)
+                if backtrack(iters + 1):
+                    return True
+                row[i].add(val)
+                col[j].add(val)
+                block[b].add(val)
+            return False
+                
+        row = [set(range(1, 10)) for i in range(9)]  # 行剩余可用数字
+        col = [set(range(1, 10)) for i in range(9)]  # 列剩余可用数字
+        block = [set(range(1, 10)) for i in range(9)] # 块剩余可用数字
+        empty = []
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == '.':
+                    empty.append((i, j))
+                else:
+                    val = int(board[i][j])
+                    row[i].remove(val)
+                    col[j].remove(val)
+                    b = (i // 3) * 3 + j // 3 #第一个3x3 block 位于 b[0],下面的3x3位于b[1]
+                    block[b].remove(val)
+        backtrack(0)
+        
