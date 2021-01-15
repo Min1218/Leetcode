@@ -1,0 +1,64 @@
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+A palindrome string is a string that reads the same backward as forward.
+
+ 
+
+Example 1:
+
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+Example 2:
+
+Input: s = "a"
+Output: [["a"]]
+ 
+
+Constraints:
+
+1 <= s.length <= 16
+s contains only lowercase English letters.
+
+~~~~~~~~~~~~~~~
+"""
+回溯法
+reference:
+https://leetcode-cn.com/problems/palindrome-partitioning/solution/131-fen-ge-hui-wen-chuan-hui-su-sou-suo-suan-fa-xi/
+for 循环 横向遍历
+递归 纵向遍历
+Time Complexity : O(N*2^{N}, where N is the length of string s. This is the worst-case time complexity 
+when all the possible substrings are palindrome. "aaa"
+Space Complexity: O(N). This space will be used to store the recursion stack. For s = aaa, the maximum depth
+of the recursive call stack is 3 which is equivalent to NN.
+"""
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        
+        def isValid(s, start, end):
+            if s[start] != s[end]:
+                return False
+            while start < end:
+                if s[start] != s[end]:
+                    return False
+                start += 1
+                end -= 1
+            return True
+        def backtrack(s, path, idx):
+            if idx == size:
+                res.append(path[:])
+                
+            for i in range(idx, size):
+                if isValid(s, idx, i):
+                    path.append(s[idx:i + 1])
+                    backtrack(s, path, i + 1)
+                    path.pop()
+                else:
+                    continue
+        
+        size = len(s)
+        if not size:
+            return [[]]
+        path, res = [], []
+        backtrack(s, path, 0)
+        return res
+        
