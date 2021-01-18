@@ -45,3 +45,21 @@ class Solution:
             queue = next_que
         
         return level
+"""
+dp
+时间复杂度：O(n\cdot\sqrt{n})，在主步骤中，我们有一个嵌套循环，其中外部循环是 nn 次迭代，而内部循环最多需要 \sqrt{n}迭代。
+空间复杂度：O(n)，使用了一个一维数组 dp。
+"""
+class Solution:
+    def numSquares(self, n: int) -> int:
+        sqrt_nums = [i * i for i in range(int(math.sqrt(n)) + 1)]
+        dp = [float('inf')] * (n + 1)
+        dp[0] = 0
+        
+        for i in range(1, n + 1):
+            for square in sqrt_nums:
+                if i < square:
+                    break
+                dp[i] = min(dp[i], dp[i - square] + 1)
+        
+        return dp[-1]
