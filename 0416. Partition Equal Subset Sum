@@ -1,0 +1,72 @@
+Given a non-empty array nums containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+
+ 
+
+Example 1:
+
+Input: nums = [1,5,11,5]
+Output: true
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+Example 2:
+
+Input: nums = [1,2,3,5]
+Output: false
+Explanation: The array cannot be partitioned into equal sum subsets.
+ 
+
+Constraints:
+
+1 <= nums.length <= 200
+1 <= nums[i] <= 100
+~~~~~~~~~~~~~~~~~~~~~~~~·
+
+"""
+reference:
+https://leetcode-cn.com/problems/partition-equal-subset-sum/solution/0-1-bei-bao-wen-ti-xiang-jie-zhen-dui-ben-ti-de-yo/
+画一个 len 行，target + 1 列的表格。这里 len 是物品的个数，target 是背包的容量。len 行表示一个一个物品考虑，target + 1多出来的那 1 列，表示背包容量从 0 开始考虑。很多时候，我们需要考虑这个容量为 0 的数值。
+(1) 状态定义：dp[i][j]表示从数组的 [0, i] 这个子区间内挑选一些正整数，每个数只能用一次，使得这些数的和恰好等于 j。
+(2) 对于「0-1 背包问题」而言就是「当前考虑到的数字选与不选」。
+不选择 nums[i]，如果在 [0, i - 1] 这个子区间内已经有一部分元素，使得它们的和为 j ，那么 dp[i][j] = true；
+选择 nums[i]，如果在 [0, i - 1] 这个子区间内就得找到一部分元素，使得它们的和为 j - nums[i]。
+(3)状态转移方程：
+dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i]]
+O(m*n); O(m*n) m=len(nums), n= target
+->可以进一步优化dp为一维
+O(m*n); O(n) m=len(nums), n= target
+"""
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        # dp一维
+        if not nums or len(nums) == 1 or sum(nums) % 2:
+            return False
+        target = sum(nums) // 2
+        dp = [False] * (target + 1)
+        dp[0] = True
+        for i in range(1, len(nums)):
+            for j in reversed(range(target + 1)):
+                if dp[target]:
+                    return True
+                if nums[i] == j:
+                    dp[j] = True
+                if nums[i] < j:
+                    dp[j] = dp[j] or dp[j - nums[i]]
+        return dp[target]
+                    
+#         if not nums or len(nums) == 1 or sum(nums) % 2:
+#             return False
+#         target = sum(nums) // 2
+#         dp = [[False] * (target + 1) for i in range(len(nums))]
+#         #初始化第一行
+#         if nums[0] < target + 1: #[9, 5]
+#             dp[0][nums[0]] = True
+        
+#         for i in range(1, len(nums)):
+#             for j in range(target + 1):
+#                 if dp[i][target]:
+#                     return True
+                
+#                 if nums[i] == j:
+#                     dp[i][j] = True
+#                 elif nums[i] < j:
+#                     dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i]]
+#         return dp[-1][target]
