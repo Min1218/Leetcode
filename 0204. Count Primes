@@ -1,0 +1,43 @@
+Count the number of prime numbers less than a non-negative number, n.
+
+ 
+
+Example 1:
+
+Input: n = 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+Example 2:
+
+Input: n = 0
+Output: 0
+Example 3:
+
+Input: n = 1
+Output: 0
+ 
+
+Constraints:
+
+0 <= n <= 5 * 106
+~~~~~~~~~~~~~~~~~~
+
+"""
+reference:https://leetcode-cn.com/problems/count-primes/solution/qiu-zhi-shu-chao-guo-90-by-powcai/
+埃氏筛:我们考虑这样一个事实：如果 xx 是质数，那么大于 xx 的 xx 的倍数 2x,3x,\ldots2x,3x,… 一定不是质数。
+O(nloglogn); O(n)
+"""
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        isPrimes = [1] * n
+        res = 0
+        
+        for i in range(2, n):
+            if isPrimes[i] == 1:
+                res += 1
+            j = i
+            while i * j < n:
+                isPrimes[i*j] = 0
+                j += 1
+        
+        return res
