@@ -31,18 +31,32 @@ Constraints:
 
 ~~~~~~~~~~~~~~~~~~~
 """
+用二分法找到right值
+再用双指针
 O(logc); O(1)
 """
 class Solution:
     def judgeSquareSum(self, c: int) -> bool:
-        left, right = 0, int(math.sqrt(c))
-        
+        left, right = 0, self.sqrt(c)
         while left <= right:
-            if left ** 2 + right ** 2 > c:
-                right -= 1
-            elif left ** 2 + right ** 2 < c:
+            s = left * left + right * right
+            if s == c:
+                return True
+            if s < c:
                 left += 1
             else:
-                return True
-        
+                right -= 1
         return False
+    def sqrt(self, num):
+        if num == 1 or num == 0:
+            return num
+        left, right = 1, num // 2
+        while left < right:
+            mid = (left + right) // 2
+            if mid * mid == num:
+                break
+            if mid * mid < num:
+                left = mid + 1
+            else:
+                right = mid
+        return right
