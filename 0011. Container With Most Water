@@ -34,9 +34,9 @@ n = height.length
 """
 reference：https://leetcode-cn.com/problems/container-with-most-water/solution/container-with-most-water-shuang-zhi-zhen-fa-yi-do/
 需要考虑left，right移动规则
-每一个状态下，无论长板或短板收窄 11 格，都会导致水槽 底边宽度 -1−1：
-若向内移动短板，水槽的短板 min(h[i], h[j])min(h[i],h[j]) 可能变大，因此水槽面积 S(i, j)S(i,j) 可能增大。
-若向内移动长板，水槽的短板 min(h[i], h[j])min(h[i],h[j]) 不变或变小，下个水槽的面积一定小于当前水槽面积。
+每一个状态下，无论长板或短板收窄 1 格，都会导致水槽 底边宽度 −1：
+若向内移动短板，水槽的短板 min(h[i], h[j]) 可能变大，因此水槽面积S(i,j) 可能增大。
+若向内移动长板，水槽的短板 min(h[i],h[j]) 不变或变小，下个水槽的面积一定小于当前水槽面积。
 O(n), O(1)
 """
 class Solution:
