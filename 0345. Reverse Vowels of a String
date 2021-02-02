@@ -13,7 +13,10 @@ The vowels does not include the letter "y".
 
 ~~~~~~~~~~~~~~~~~
 """
-string -> list:可以遍历
+'str' object does not support item assignment
+    s[left] = s[right]
+string -> list:可以重新赋值
+
 O(n); O(n)
 """
 class Solution:
