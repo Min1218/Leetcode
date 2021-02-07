@@ -50,10 +50,10 @@ class Solution:
                 right = idx - 1
         
 #         # method 1
-#         res = []
+#         res = [] 
 #         for i in range(len(nums)):
 #             if len(res) == k:
-#                 if nums[i] > res[0]:
+#                 if nums[i] > res[0]: # res从小到大排列
 #                     heapq.heappop(res)
 #                     heapq.heappush(res, nums[i])
 #             else:
