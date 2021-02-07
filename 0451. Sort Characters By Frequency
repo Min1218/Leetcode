@@ -60,12 +60,16 @@ class Solution:
         return ''.join(res)
                 
         # # method 1
-        # mapping = dict()
-        # lst = list()
-        # for c in s:
-        #     mapping[c] = mapping.get(c, 0) + 1
-        # for c in mapping:
-        #     for j in range(mapping[c]):
-        #         heapq.heappush(lst, [-mapping[c], c])
-        # return ''.join([heapq.heappop(lst)[1] for i in range(len(lst))])
+        #mapping = dict()
+        #heap, res = list(), list()
+        
+        #for c in s:
+        #mapping[c] = mapping.get(c, 0) + 1
+        #for c in mapping:
+            #heapq.heappush(heap, [-mapping[c], c]) #先pop出小的元素值
+            #while heap:
+                #cnt, c = heapq.heappop(heap)
+                #res.extend(c * (-cnt))
+
+        #return ''.join(res)
         
