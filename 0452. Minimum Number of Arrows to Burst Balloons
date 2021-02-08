@@ -44,14 +44,13 @@ class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         if not points:
             return 0
-        
+            
         points = sorted(points, key=lambda x:x[1])
-        cnt = 1
-        end = points[0][1]
+        cnt, last_end = 1, points[0][1]
         
         for point in points[1:]:
-            if point[0] > end:
-                end = point[1]
+            start, end = point[0], point[1]
+            if last_end < start:
                 cnt += 1
-        
+                last_end = end
         return cnt
