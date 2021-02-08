@@ -1,0 +1,51 @@
+Given an integer, write an algorithm to convert it to hexadecimal. For negative integer, two’s complement method is used.
+
+Note:
+
+All letters in hexadecimal (a-f) must be in lowercase.
+The hexadecimal string must not contain extra leading 0s. If the number is zero, it is represented by a single zero character '0'; otherwise, the first character in the hexadecimal string will not be the zero character.
+The given number is guaranteed to fit within the range of a 32-bit signed integer.
+You must not use any method provided by the library which converts/formats the number to hex directly.
+Example 1:
+
+Input:
+26
+
+Output:
+"1a"
+Example 2:
+
+Input:
+-1
+
+Output:
+"ffffffff"
+~~~~~~~~~~~~~~~~~~~~~
+
+"""
+reference：https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/solution/fen-qing-kuang-zhuan-hua-16jin-zhi-by-yylang/
+#编制16进制字典
+#如果num>0，每次把num%16的结果加入ans的前边，用num//16的结果替代num，直到num为0
+#如果num=0，直接返回'0'
+#如果num<0，进行补码运算，补码运算其实就是用计算位数允许的最大值作为上限，超过它就进行模运算，而负数的补码运算相当于用最大值
+#2 ** 32（4294967296）加上num，再进行正常的16进制转换即可
+
+"""
+class Solution:
+    def toHex(self, num: int) -> str:
+            decimal = '0123456789abcdef'
+            res = ''
+            if num == 0:
+                return '0'
+            elif num > 0:
+                while num >= 16:
+                    res = decimal[num % 16] + res
+                    num = num // 16
+                res = decimal[num] + res
+            else:
+                num = 2 ** 32 + num
+                while num >= 16:
+                    res = decimal[num % 16] + res
+                    num = num // 16
+                res = decimal[num] + res
+            return ''.join(res)
