@@ -15,19 +15,20 @@ reference: https://leetcode-cn.com/problems/base-7/solution/python-shi-xian-by-k
 """
 class Solution:
     def convertToBase7(self, num: int) -> str:
+        res = ''
         flag = 0
-        res = list()
         
+        if num == 0:
+            return '0'
         if num < 0:
             flag = 1
             num = -num
+        
         while num >= 7:
-            residue = str(num % 7)
-            res.append(residue)
-            num = num // 7
-        res.append(str(num))
+            res = str(num % 7) + res
+            num = num // 7            
+        res = str(num) + res
         if flag:
-            res.append('-')
-        res.reverse()
+            res = '-' + res
         return ''.join(res)
             
