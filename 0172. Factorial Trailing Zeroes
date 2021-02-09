@@ -28,6 +28,7 @@ Constraints:
 reference: https://leetcode-cn.com/problems/factorial-trailing-zeroes/solution/xiang-xi-tong-su-de-si-lu-fen-xi-by-windliang-3/
 规律就是每隔 5 个数，出现一个 5，每隔 25 个数，出现 2 个 5，每隔 125 个数，出现 3 个 5... 以此类推。
 最终 5 的个数就是 n / 5 + n / 25 + n / 125 ...
+O(logn); O(1)
 """
 class Solution:
     def trailingZeroes(self, n: int) -> int:
