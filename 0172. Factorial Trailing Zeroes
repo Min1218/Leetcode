@@ -1,0 +1,39 @@
+Given an integer n, return the number of trailing zeroes in n!.
+
+Follow up: Could you write a solution that works in logarithmic time complexity?
+
+
+Example 1:
+
+Input: n = 3
+Output: 0
+Explanation: 3! = 6, no trailing zero.
+Example 2:
+
+Input: n = 5
+Output: 1
+Explanation: 5! = 120, one trailing zero.
+Example 3:
+
+Input: n = 0
+Output: 0
+ 
+
+Constraints:
+
+0 <= n <= 104
+~~~~~~~~~~~~~~~~~~~~~
+
+"""
+reference: https://leetcode-cn.com/problems/factorial-trailing-zeroes/solution/xiang-xi-tong-su-de-si-lu-fen-xi-by-windliang-3/
+规律就是每隔 5 个数，出现一个 5，每隔 25 个数，出现 2 个 5，每隔 125 个数，出现 3 个 5... 以此类推。
+最终 5 的个数就是 n / 5 + n / 25 + n / 125 ...
+"""
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        cnt = 0
+        while n > 0:
+            n = n //5
+            cnt += n 
+        
+        return cnt
