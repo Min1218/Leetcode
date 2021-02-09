@@ -1,0 +1,36 @@
+Given a non-empty integer array, find the minimum number of moves required to make all array elements equal, where a move is incrementing a selected element by 1 or decrementing a selected element by 1.
+
+You may assume the array's length is at most 10,000.
+
+Example:
+
+Input:
+[1,2,3]
+
+Output:
+2
+
+Explanation:
+Only two moves are needed (remember each move increments or decrements one element):
+
+[1,2,3]  =>  [2,2,3]  =>  [2,2,2]
+~~~~~~~~~~~~~~~~~
+
+"""
+reference:https://leetcode-cn.com/problems/minimum-moves-to-equal-array-elements-ii/solution/jiang-dao-li-by-carudy/
+设 a <= x <= b，将 a 和 b 都变化成 x 为最终目的，则需要步数为 x-a+b-x = b-a，即两个数最后相等的话步数一定是他们的差，x 在 a 和 b 间任意取；
+所以最后剩的其实就是中位数；
+O(nlogn); O(1)
+"""
+class Solution:
+    def minMoves2(self, nums: List[int]) -> int:
+        nums.sort()
+        res = 0
+        left, right = 0, len(nums) - 1
+        
+        while left < right:
+            res += nums[right] - nums[left]
+            left += 1
+            right -= 1
+        
+        return res
