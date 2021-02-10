@@ -1,0 +1,56 @@
+Given an integer array nums, find three numbers whose product is maximum and return the maximum product.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: 6
+Example 2:
+
+Input: nums = [1,2,3,4]
+Output: 24
+Example 3:
+
+Input: nums = [-1,-2,-3]
+Output: -6
+ 
+
+Constraints:
+
+3 <= nums.length <= 104
+-1000 <= nums[i] <= 1000
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
+reference:
+https://leetcode-cn.com/problems/maximum-product-of-three-numbers/solution/pai-xu-fa-he-bu-pai-xu-de-fang-fa-du-zai-zhe-li-li/
+https://leetcode-cn.com/problems/maximum-product-of-three-numbers/solution/san-ge-shu-de-zui-da-cheng-ji-by-leetcod-t9sb/
+分3种情况：
+1. 如果数组中全是非负数，则排序后最大的三个数相乘即为最大乘积；
+2. 如果全是非正数，则最大的三个数相乘同样也为最大乘积。
+3. 如果数组中有正数有负数，则最大乘积既可能是三个最大正数的乘积，也可能是两个最小负数（即绝对值最大）与最大正数的乘积。
+
+综上，我们在给数组排序后，分别求出三个最大正数的乘积，以及两个最小负数与最大正数的乘积，二者之间的最大值即为所求答案。
+O(n); O(1)
+"""
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        max1, max2, max3 = -float('inf'), -float('inf'), -float('inf')
+        min1, min2 = float('inf'), float('inf')
+        
+        for num in nums:
+            if num > max1:
+                max3, max2, max1 = max2, max1, num
+                
+            elif num > max2:
+                max3, max2 = max2, num
+            elif num > max3:
+                max3 = num
+            
+            if num < min1:
+                min2, min1 = min1, num
+            elif num < min2:
+                min2 = num
+        
+        return max(max1 * max2 * max3, min1 * min2 * max1)
