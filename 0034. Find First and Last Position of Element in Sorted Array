@@ -40,43 +40,37 @@ O(logn); O(1)
 """
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        
-        def findLeft(nums, size):
-            left, right = 0, size - 1
-            while left < right:
-                mid = left + (right - left) // 2
-                if nums[mid] > target:
-                    right = mid - 1
-                elif nums[mid] < target:
-                    left = mid + 1
-                else:
-                    right = mid
-            if nums[left] == target:
-                return left
+        if not nums:
+            return [-1, -1]
+        size = len(nums) - 1
+        idx_left = self.findLeft(nums, 0, size, target)
+        if idx_left == -1:
+            return [-1, -1]
+        idx_right = self.findRight(nums, 0, size, target)
+        return [idx_left, idx_right]
+    
+    def findLeft(self, nums, left, right, target):
+        while left < right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                right = mid 
+            elif nums[mid] > target:
+                right = mid - 1
             else:
-                return -1
+                left = mid + 1
+        return left if nums[left] == target else -1
+    
+    def findRight(self, nums, left, right, target):
+        while left < right:
+            mid = left + (right - left + 1) // 2
+            if nums[mid] == target:
+                left = mid
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                left = mid + 1
             
-        def findRight(nums, size):
-            left, right = 0, size - 1
-            while left < right:
-                mid = left + (right - left + 1) // 2
-                if nums[mid] > target:
-                    right = mid - 1
-                elif nums[mid] < target:
-                    left = mid + 1
-                else:
-                    left = mid 
-            return left
-        
-        size = len(nums)
-        if size == 0:
-            return [-1, -1]
-        left_idx = findLeft(nums, size)
-        if left_idx == -1:
-            return [-1, -1]
-        right_idx = findRight(nums, size)
-        
-        return [left_idx, right_idx]
+        return left if nums[left] == target else -1
         
             
         #二分查找+线性搜索 -> 时间复杂度高
