@@ -39,10 +39,7 @@ O(m*n); O(m*n)
 class Solution:
     directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
     def numIslands(self, grid: List[List[str]]) -> int:
-        m = len(gr"""
-dfs
-O(m*n); O(m*n)
-"""id)
+        m = len(grid)
         if not m:
             return 0
         n = len(grid[0])
