@@ -40,7 +40,7 @@ class Solution:
         if not nums:
             return nums
         row, col = len(nums), len(nums[0])
-        if r * c > row * col:
+        if r * c != row * col:
             return nums
         
         res = [[0]*c for i in range(r)]
